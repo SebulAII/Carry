@@ -181,28 +181,28 @@ class TestStrategy(backtrader.Strategy):
                         self.vol2open = None
 
             if self.ticket is not None:
-                self.carry1 = ((self.datas[2].close[0] * self.vol1 * self.datas[0].close[0])/self.datas[0].close[0])
-                self.carry2 = ((self.datas[3].close[0] * -self.vol2 * self.datas[1].close[0])/self.datas[1].close[0])
+                self.carry1 = (((self.datas[2].close[0] * self.vol1 * self.datas[0].close[0])/self.datas[0].close[0])/self.datas[4].close[0])
+                self.carry2 = (((self.datas[3].close[0] * -self.vol2 * self.datas[1].close[0])/self.datas[1].close[0])/self.datas[5].close[0])
                 if self.carry1 + self.carry2 > self.min_swap: 
               #      self.Pair1Exposure = (self.buyValue - (self.cena1 * self.vol1open))/cenka1
               #      self.Pair2Exposure = (self.sellValue - (self.cena2 * self.vol2open))/cenka2
                     self.holdingDateList.append(len(self))
-                    self.pair1_carry.append((self.datas[2].close[0] * self.vol1 * self.datas[0].close[0])/self.datas[0].close[0])
-                    self.pair2_carry.append((self.datas[3].close[0] * -self.vol2 * self.datas[1].close[0])/self.datas[1].close[0])
+                    self.pair1_carry.append(((self.datas[2].close[0] * self.vol1 * self.datas[0].close[0])/self.datas[0].close[0])/self.datas[4].close[0])
+                    self.pair2_carry.append(((self.datas[3].close[0] * -self.vol2 * self.datas[1].close[0])/self.datas[1].close[0])/self.datas[5].close[0])
                     self.pair1_carry_sum = sum(self.pair1_carry)
                     self.pair2_carry_sum = sum(self.pair2_carry)
                     self.swapsSum = sum(self.pair1_carry + self.pair2_carry)
 
                 #do sumy price changes ABS
-                self.test_daily_change.append(abs(((self.vol1open * (self.datas[0].close[0] - self.datas[0].close[-1]))/self.datas[0].close[0]))
-                + abs(((self.vol2open * (self.datas[1].close[0] - self.datas[1].close[-1]))/self.datas[1].close[0])))
+                self.test_daily_change.append(abs((((self.vol1open * (self.datas[0].close[0] - self.datas[0].close[-1]))/self.datas[0].close[0]))/self.datas[4].close[0])
+                + abs((((self.vol2open * (self.datas[1].close[0] - self.datas[1].close[-1]))/self.datas[1].close[0]))/self.datas[5].close[0]))
                 
                 #do printowania price changes ABS
-                self.testowy_daily_change = (((self.vol1open * (self.datas[0].close[0] - self.datas[0].close[-1]))/self.datas[0].close[0])
-                + ((self.vol2open * (self.datas[1].close[0] - self.datas[1].close[-1]))/self.datas[1].close[0]))
+                #self.testowy_daily_change = ((((self.vol1open * (self.datas[0].close[0] - self.datas[0].close[-1]))/self.datas[0].close[0])/self.datas[4].close[0])
+                #+ (((self.vol2open * (self.datas[1].close[0] - self.datas[1].close[-1]))/self.datas[1].close[0])/self.datas[5].close[0]))
                 #do wyliczenia dziennych zmian cen
-                self.test_daily_change_summary.append((((self.vol1open * (self.datas[0].close[0] - self.datas[0].close[-1]))/self.datas[0].close[0]))
-                + (((self.vol2open * (self.datas[1].close[0] - self.datas[1].close[-1]))/self.datas[1].close[0])))
+                self.test_daily_change_summary.append(((((self.vol1open * (self.datas[0].close[0] - self.datas[0].close[-1]))/self.datas[0].close[0]))/self.datas[4].close[0])
+                + ((((self.vol2open * (self.datas[1].close[0] - self.datas[1].close[-1]))/self.datas[1].close[0]))/self.datas[5].close[0]))
 ##########################################33
                 #suma zmian cen do podsumowania (nie abs)
                 self.test_daily_change_summary_report = sum(self.test_daily_change_summary)
@@ -210,7 +210,7 @@ class TestStrategy(backtrader.Strategy):
                 self.test_sum = sum(self.test_daily_change)
 
                 #suma swap - change (nie abs)
-                self.test_swap_priceChange = (self.swapsSum*100) + self.test_sum
+                self.test_swap_priceChange = (self.swapsSum*500) + self.test_daily_change_summary_report
                 #self.swap_by_profit = self.swapsSum / self.test_daily_change_summary_report
 
 ##################################################3
